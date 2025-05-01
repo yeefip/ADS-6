@@ -1,59 +1,58 @@
 // Copyright 2022 NNTU-CS
-#ifndef TPQUEUE_H
-#define TPQUEUE_H
+#ifndef INCLUDE_TPQUEUE_H_
+#define INCLUDE_TPQUEUE_H_
+
+#include <stdexcept>  // <== Это для std::runtime_error
 
 template <typename T>
 class TPQueue {
-private:
-    struct Node {
-        T data;
-        Node* next;
-
-        Node(const T& val) : data(val), next(nullptr) {}
-    };
-
-    Node* head;
-
-public:
-    TPQueue() : head(nullptr) {}
-
-    ~TPQueue() {
-        while (!isEmpty()) {
-            pop();
-        }
+ public:
+  TPQueue() : head(nullptr) {}
+  ~TPQueue() {
+    while (!isEmpty()) {
+      pop();
     }
+  }
 
-    void push(const T& val) {
-        Node* newNode = new Node(val);
-
-        if (!head || val.prior > head->data.prior) {
-            newNode->next = head;
-            head = newNode;
-        } else {
-            Node* current = head;
-            while (current->next && current->next->data.prior >= val.prior) {
-                current = current->next;
-            }
-            newNode->next = current->next;
-            current->next = newNode;
-        }
+  void push(const T& val) {
+    Node* newNode = new Node(val);
+    if (!head || val.prior > head->data.prior) {
+      newNode->next = head;
+      head = newNode;
+    } else {
+      Node* current = head;
+      while (current->next && current->next->data.prior >= val.prior) {
+        current = current->next;
+      }
+      newNode->next = current->next;
+      current->next = newNode;
     }
+  }
 
-    void pop() {
-        if (!head) return;
-        Node* temp = head;
-        head = head->next;
-        delete temp;
-    }
+  void pop() {
+    if (!head) return;
+    Node* temp = head;
+    head = head->next;
+    delete temp;
+  }
 
-    const T& front() const {
-        if (!head) throw std::runtime_error("Queue is empty");
-        return head->data;
-    }
+  const T& front() const {
+    if (!head) throw std::runtime_error("Queue is empty");
+    return head->data;
+  }
 
-    bool isEmpty() const {
-        return head == nullptr;
-    }
+  bool isEmpty() const {
+    return head == nullptr;
+  }
+
+ private:
+  struct Node {
+    explicit Node(const T& val) : data(val), next(nullptr) {}
+    T data;
+    Node* next;
+  };
+
+  Node* head;
 };
 
-#endif // TPQUEUE_H 
+#endif  // INCLUDE_TPQUEUE_H_
