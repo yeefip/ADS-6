@@ -35,12 +35,14 @@ class TPQueue {
     }
   }
 
-  void pop() {
-    if (!head) return;
-    Node* temp = head;
-    head = head->next;
-    delete temp;
-  }
+T pop() {
+  if (!head) throw std::runtime_error("Queue is empty");
+  Node* temp = head;
+  T result = temp->data;
+  head = head->next;
+  delete temp;
+  return result;
+}
 
   const T& front() const {
     if (!head) throw std::runtime_error("Queue is empty");
