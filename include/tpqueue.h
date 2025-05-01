@@ -2,12 +2,18 @@
 #ifndef INCLUDE_TPQUEUE_H_
 #define INCLUDE_TPQUEUE_H_
 
-#include <stdexcept>  // <== Это для std::runtime_error
+#include <stdexcept>
+
+struct SYM {
+  char ch;
+  int prior;
+};
 
 template <typename T>
 class TPQueue {
  public:
   TPQueue() : head(nullptr) {}
+
   ~TPQueue() {
     while (!isEmpty()) {
       pop();
